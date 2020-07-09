@@ -5,9 +5,6 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "preact": "^10.4.5",
     "preact-compat": "^3.19.0",
     "react-scripts": "3.4.1"
@@ -16,7 +13,14 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
+    "lint": "eslint \"**/*.js\" --ignore-pattern node_modules --ignore-pattern public --ignore-pattern build",
+    "lint:fix": "eslint \"**/*.js\" --fix --ignore-pattern node_modules --ignore-pattern public --ignore-pattern build",
     "eject": "react-scripts eject"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,6 +46,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.5",
     "react-app-rewired": "^2.1.6"
   }
 }
