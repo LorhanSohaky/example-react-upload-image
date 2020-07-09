@@ -1,10 +1,10 @@
-export function stopWatch(){
+export function stopWatch () {
   let initial = 0
   let final = 0
   let interval = 0
   const divisors = {
     seconds: 1000,
-    minutes: 60 * 1000,
+    minutes: 60 * 1000
   }
 
   const start = () => {
@@ -12,10 +12,10 @@ export function stopWatch(){
     return initial
   }
 
-  const computeInterval = (unit)  => {
+  const computeInterval = (unit) => {
     interval = final - initial
 
-    if(unit === undefined) {
+    if (unit === undefined) {
       return interval
     }
 
@@ -37,5 +37,4 @@ export function stopWatch(){
     start,
     stop
   }
-
 }

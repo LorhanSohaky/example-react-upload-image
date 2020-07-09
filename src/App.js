@@ -10,32 +10,32 @@ const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'fixed',
     bottom: theme.spacing(2),
-    right: theme.spacing(2),
+    right: theme.spacing(2)
   }
-}));
+}))
 
-function App() {
+function App () {
   const [loading, setLoading] = useState(false)
-  const [images, setImages] = useState([])
+  const [images] = useState([])
   const inputRef = useRef()
 
   const classes = useStyles()
 
-  function handleAddImage(){
+  function handleAddImage () {
     inputRef.current && inputRef.current.click()
   }
 
-  async function handleImage(event) {
+  async function handleImage (event) {
     setLoading(true)
     const files = event.target.files
-    
+
     const stopwatch = stopWatch()
     stopwatch.start()
-    let size = 0
+    const size = 0
 
-    try {  
+    try {
       // TODO: Implement image upload
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     } finally {
       setLoading(false)
@@ -43,7 +43,7 @@ function App() {
       stopwatch.stop()
       const interval = stopwatch.computeInterval('minutes')
 
-      console.log(`${files.length} - files (${(size/1000000).toFixed(2)} MB)`)
+      console.log(`${files.length} - files (${(size / 1000000).toFixed(2)} MB)`)
       console.log(`Processed in ${interval.toFixed(2)} min`)
     }
   }
@@ -60,14 +60,14 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <LinearProgress value={0} valueBuffer={0} style={loading? 'visibility: visible' : 'visibility: hidden'}/>
+      <LinearProgress value={0} valueBuffer={0} style={loading ? 'visibility: visible' : 'visibility: hidden'}/>
       <Container>
         <GridList
           cellHeight={160}
           cols={3}
           spacing={8}
         >
-         {images.map((image,index)=> <GridListTile key={index}><img src={image} alt={`${index}`} /></GridListTile>)} 
+          {images.map((image, index) => <GridListTile key={index}><img src={image} alt={`${index}`} /></GridListTile>)}
         </GridList>
         <Fab color='primary' aria-label='add' className={classes.fab} onClick={handleAddImage}>
           <AddIcon />
@@ -78,4 +78,4 @@ function App() {
   )
 }
 
-export default App;
+export default App
