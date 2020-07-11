@@ -22,5 +22,11 @@ module.exports = {
     'react'
   ],
   rules: {
+  },
+  settings: {
+    react: {
+      pragma: 'React',
+      version: '16.0'
+    }
   }
 }
