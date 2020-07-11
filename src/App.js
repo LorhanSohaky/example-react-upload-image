@@ -4,8 +4,9 @@ import { Container, AppBar, Toolbar, IconButton, Typography, Box, LinearProgress
 import MenuIcon from '@material-ui/icons/Menu'
 import AddIcon from '@material-ui/icons/Add'
 
-import { stopWatch } from './utils'
+import { stopWatch, base64ToImage } from './utils'
 import readFile from './lib/readFile'
+import compressImageAndAutoResize from './lib/compressImage'
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -38,7 +39,8 @@ function App () {
       for (let i = 0; i < files.length; i++) {
         size += files.item(i).size
         const encodedImage = await readFile(files.item(i))
-        setImages(prevState => [...prevState, encodedImage])
+        const compressedImage = await (base64ToImage(encodedImage).then(compressImageAndAutoResize))
+        setImages(prevState => [...prevState, compressedImage])
       }
     } catch (err) {
       console.error(err)
