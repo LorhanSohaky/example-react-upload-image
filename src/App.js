@@ -33,13 +33,16 @@ function App () {
 
     const stopwatch = stopWatch()
     stopwatch.start()
-    let size = 0
+    let sizeBefore = 0
+    let sizeAfter = 0
 
     try {
       for (let i = 0; i < files.length; i++) {
-        size += files.item(i).size
         const encodedImage = await readFile(files.item(i))
+        sizeBefore += encodedImage.length
         const compressedImage = await (base64ToImage(encodedImage).then(compressImageAndAutoResize))
+        sizeAfter += compressedImage.length
+
         setImages(prevState => [...prevState, compressedImage])
       }
     } catch (err) {
@@ -50,7 +53,8 @@ function App () {
       stopwatch.stop()
       const interval = stopwatch.computeInterval('minutes')
 
-      console.log(`${files.length} - files (${(size / 1000000).toFixed(2)} MB)`)
+      console.log(`${files.length} - files (Before ${(sizeBefore / 1000000).toFixed(2)} MB)`)
+      console.log(`${files.length} - files (${(sizeAfter / 1000000).toFixed(2)} MB)`)
       console.log(`Processed in ${interval.toFixed(2)} min`)
     }
   }
