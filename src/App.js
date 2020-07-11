@@ -5,6 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import AddIcon from '@material-ui/icons/Add'
 
 import { stopWatch } from './utils'
+import readFile from './lib/readFile'
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App () {
   const [loading, setLoading] = useState(false)
-  const [images] = useState([])
+  const [images, setImages] = useState([])
   const inputRef = useRef()
 
   const classes = useStyles()
@@ -31,10 +32,14 @@ function App () {
 
     const stopwatch = stopWatch()
     stopwatch.start()
-    const size = 0
+    let size = 0
 
     try {
-      // TODO: Implement image upload
+      for (let i = 0; i < files.length; i++) {
+        size += files.item(i).size
+        const encodedImage = await readFile(files.item(i))
+        setImages(prevState => [...prevState, encodedImage])
+      }
     } catch (err) {
       console.error(err)
     } finally {
