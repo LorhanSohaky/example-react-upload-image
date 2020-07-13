@@ -2,10 +2,12 @@ import React, { useState, useRef } from 'react'
 import { Container, AppBar, Toolbar, IconButton, Typography, Box, LinearProgress, GridList, Fab, makeStyles, GridListTile } from '@material-ui/core'
 
 import MenuIcon from '@material-ui/icons/Menu'
+import ArrowBack from '@material-ui/icons/ArrowBack'
 import AddIcon from '@material-ui/icons/Add'
 
 import { stopWatch } from './utils'
 import readFile from './lib/readFile'
+import Carousel from './components/Carousel'
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -18,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 function App () {
   const [loading, setLoading] = useState(false)
   const [images, setImages] = useState([])
+  const [showCarousel, setShowCarousel] = useState(false)
   const inputRef = useRef()
 
   const classes = useStyles()
@@ -53,12 +56,31 @@ function App () {
     }
   }
 
+  function renderGrid () {
+    return <>
+      <GridList
+        cellHeight={160}
+        cols={3}
+        spacing={8}
+      >
+        {images.map((image, index) => <GridListTile key={index} onClick={() => setShowCarousel(true)}><img src={image} alt={`${index}`} /></GridListTile>)}
+      </GridList>
+      <Fab color='primary' aria-label='add' className={classes.fab} onClick={handleAddImage}>
+        <AddIcon />
+      </Fab>
+    </>
+  }
+
+  function renderCarousel () {
+    return <Carousel images={images}/>
+  }
+
   return (
     <Box>
       <AppBar position='static'>
         <Toolbar variant='dense'>
-          <IconButton edge='start' color='inherit' aria-label='menu'>
-            <MenuIcon />
+          <IconButton edge='start' color='inherit' aria-label='menu' onClick={() => showCarousel && setShowCarousel(false)}>
+            {showCarousel ? <ArrowBack/> : <MenuIcon />}
           </IconButton>
           <Typography variant='h6' color='inherit'>
             Photos
@@ -67,16 +89,7 @@ function App () {
       </AppBar>
       <LinearProgress value={0} valueBuffer={0} style={loading ? 'visibility: visible' : 'visibility: hidden'}/>
       <Container>
-        <GridList
-          cellHeight={160}
-          cols={3}
-          spacing={8}
-        >
-          {images.map((image, index) => <GridListTile key={index}><img src={image} alt={`${index}`} /></GridListTile>)}
-        </GridList>
-        <Fab color='primary' aria-label='add' className={classes.fab} onClick={handleAddImage}>
-          <AddIcon />
-        </Fab>
+        {showCarousel ? renderCarousel() : renderGrid()}
       </Container>
       <input ref={inputRef} type='file' accept='image/png, image/jpeg' style={'display:none'} onChange={handleImage} multiple />
     </Box>
