@@ -20,6 +20,7 @@ const pica = Pica({
 
 function resolveDimensions (dimensions) {
   const aspectRatio = dimensions.width / dimensions.height
+
   if (aspectRatio >= 1) {
     const width = Math.min(dimensions.width, 768)
     const height = width / aspectRatio

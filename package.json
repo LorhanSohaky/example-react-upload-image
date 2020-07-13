@@ -8,7 +8,9 @@
     "pica": "^6.1.0",
     "preact": "^10.4.5",
     "preact-compat": "^3.19.0",
-    "react-scripts": "3.4.1"
+    "prop-types": "^15.7.2",
+    "react-scripts": "3.4.1",
+    "swiper": "^6.0.2"
   },
   "scripts": {
     "start": "react-app-rewired start",
