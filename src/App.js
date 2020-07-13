@@ -9,6 +9,7 @@ import { stopWatch, base64ToImage } from './utils'
 import readFile from './lib/readFile'
 import compressImageAndAutoResize from './lib/compressImage'
 import Carousel from './components/Carousel'
+import autoRotate from './lib/autoRotate'
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -43,7 +44,7 @@ function App () {
       for (let i = 0; i < files.length; i++) {
         const encodedImage = await readFile(files.item(i))
         sizeBefore += encodedImage.length
-        const compressedImage = await (base64ToImage(encodedImage).then(compressImageAndAutoResize))
+        const compressedImage = await (base64ToImage(encodedImage).then(autoRotate).then(compressImageAndAutoResize))
         sizeAfter += compressedImage.length
 
         setImages(prevState => [...prevState, compressedImage])
