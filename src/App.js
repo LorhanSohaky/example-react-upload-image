@@ -5,8 +5,11 @@ import MenuIcon from '@material-ui/icons/Menu'
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import AddIcon from '@material-ui/icons/Add'
 
-import { stopWatch } from './utils'
+import { stopWatch, base64ToImage } from './utils'
+import readFile from './lib/readFile'
 import Carousel from './components/Carousel'
+import compressImageAndAutoResize from './lib/compressImageAndAutoResize'
+import autoRotate from './lib/autoRotate'
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -19,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 function App () {
   const [loading, setLoading] = useState(false)
   const [showCarousel, setShowCarousel] = useState(false)
-  const [images] = useState([])
+  const [images, setImages] = useState([])
   const inputRef = useRef()
 
   const classes = useStyles()
@@ -34,10 +37,17 @@ function App () {
 
     const stopwatch = stopWatch()
     stopwatch.start()
-    const size = 0
+    let sizeBefore = 0
+    let sizeAfter = 0
 
     try {
-      // TODO: Implement image upload
+      for (let i = 0; i < files.length; i++) {
+        const encodedImage = await readFile(files.item(i))
+        const compressedImage = await base64ToImage(encodedImage).then(autoRotate).then(compressImageAndAutoResize)
+        sizeBefore += encodedImage.length
+        sizeAfter += compressedImage.length
+        setImages(prevState => [...prevState, compressedImage])
+      }
     } catch (err) {
       console.error(err)
     } finally {
@@ -46,7 +56,8 @@ function App () {
       stopwatch.stop()
       const interval = stopwatch.computeInterval('minutes')
 
-      console.log(`${files.length} - files (${(size / 1000000).toFixed(2)} MB)`)
+      console.log(`${files.length} - files (Before ${(sizeBefore / 1000000).toFixed(2)} MB)`)
+      console.log(`${files.length} - files (${(sizeAfter / 1000000).toFixed(2)} MB)`)
       console.log(`Processed in ${interval.toFixed(2)} min`)
     }
   }

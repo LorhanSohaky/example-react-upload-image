@@ -5,6 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "jpeg-autorotate": "^6.0.0",
+    "pica": "^6.1.1",
     "preact": "^10.4.5",
     "preact-compat": "^3.19.0",
     "prop-types": "^15.7.2",

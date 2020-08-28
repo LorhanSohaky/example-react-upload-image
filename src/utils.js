@@ -38,3 +38,35 @@ export function stopWatch () {
     stop
   }
 }
+export async function base64ToImage (base64, width, height) {
+  const image = new Image()
+
+  image.src = base64
+
+  if (width) {
+    image.width = width
+  }
+
+  if (height) {
+    image.height = height
+  }
+
+  return new Promise((resolve, reject) => {
+    image.addEventListener('load', () => resolve(image))
+    image.addEventListener('error', err => reject(err))
+  })
+}
+
+export function base64MimeType (encoded) {
+  if (typeof encoded !== 'string') {
+    return null
+  }
+
+  const mime = encoded.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)
+
+  if (mime && mime.length) {
+    return mime[1]
+  } else {
+    return null
+  }
+}
