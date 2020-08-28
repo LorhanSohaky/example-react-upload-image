@@ -38,3 +38,21 @@ export function stopWatch () {
     stop
   }
 }
+
+export async function base64ToImage (base64, width, height) {
+  const image = new Image()
+  image.src = base64
+
+  if (width) {
+    image.width = width
+  }
+
+  if (height) {
+    image.heigh = height
+  }
+
+  return new Promise((resolve, reject) => {
+    image.addEventListener('load', () => resolve(image))
+    image.addEventListener('error', err => reject(err))
+  })
+}
